@@ -13,6 +13,7 @@ During a scene in _Cloudy with a Chance of Meatballs 2_, the protagonists are mo
 - **ES modules support:** Native Node.js `import`/`export`.
 - **Common JS support:** common runtimes are still supported.
 - **ES6:** code uses just ES6 features.
+- **TypeScript:** this package includes its types definitions.
 
 ## Install
 
