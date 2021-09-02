@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "description": "Fast leaky bucket algorithm implementation without timers",
   "type": "module",
-  "main": "./porro.js",
-  "exports": "./porro.mjs",
+  "main": "./porro.cjs",
+  "exports": {
+    "import": "./porro.mjs",
+    "require": "./porro.cjs"
+  },
   "types": "./porro.d.ts",
   "files": [
     "porro.d.ts",
-    "porro.js",
+    "porro.cjs",
     "porro.mjs"
   ],
   "scripts": {
