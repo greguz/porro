@@ -1,6 +1,6 @@
 {
   "name": "porro",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Fast leaky bucket algorithm implementation without timers",
   "type": "module",
   "main": "./porro.js",
