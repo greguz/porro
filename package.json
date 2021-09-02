@@ -1,0 +1,38 @@
+{
+  "name": "porro",
+  "version": "0.0.0",
+  "description": "Fast leaky bucket algorithm implementation without timers",
+  "type": "module",
+  "main": "./porro.js",
+  "exports": "./porro.mjs",
+  "types": "./porro.d.ts",
+  "files": [
+    "porro.d.ts",
+    "porro.js",
+    "porro.mjs"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "standard **/*.mjs",
+    "test": "ava",
+    "prepublishOnly": "npm run lint && npm run build && npm run test"
+  },
+  "keywords": [
+    "leaky",
+    "bucket",
+    "algorithm",
+    "leek",
+    "porro"
+  ],
+  "author": "Giacomo Gregoletto",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "4.0.0-alpha.2",
+    "rollup": "^2.56.3",
+    "standard": "^16.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greguz/porro.git"
+  }
+}
