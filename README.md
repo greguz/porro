@@ -57,7 +57,7 @@ Resets the bucket to its original status.
 ## Example
 
 ```javascript
-import { Porro } from './porro.mjs'
+import { Porro } from 'porro'
 
 const bucket = new Porro({
   bucketSize: 5,
