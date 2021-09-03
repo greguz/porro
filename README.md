@@ -1,5 +1,6 @@
 [![npm version](https://badge.fury.io/js/porro.svg)](https://badge.fury.io/js/porro)
 [![ci](https://github.com/greguz/porro/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/greguz/porro/actions/workflows/ci.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/greguz/porro/badge.svg?branch=master)](https://coveralls.io/github/greguz/porro?branch=master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Porro is a simple and fast implementation of the leaky bucket algorithm.
