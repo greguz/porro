@@ -1,4 +1,4 @@
-# porro
+[![npm version](https://badge.fury.io/js/porro.svg)](https://badge.fury.io/js/porro)
 
 Porro is a simple and fast implementation of the leaky bucket algorithm.
 
