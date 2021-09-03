@@ -1,4 +1,5 @@
 [![npm version](https://badge.fury.io/js/porro.svg)](https://badge.fury.io/js/porro)
+[![ci](https://github.com/greguz/porro/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/greguz/porro/actions/workflows/ci.yaml)
 
 Porro is a simple and fast implementation of the leaky bucket algorithm.
 
