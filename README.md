@@ -35,7 +35,7 @@ Porro's `constructor`.
   - bucketSize `<Number>` The size (number of tokens) of the bucket.
   - interval `<Number>` Time interval in milliseconds to refill the bucket.
   - tokensPerInterval `<Number>` Number of refilled tokens after the specified interval.
-  - [options.queueSize] `<Number>` Number of overflowing tokens allowed. Defaults to `50`.
+  - [queueSize] `<Number>` Number of overflowing tokens allowed. Defaults to `50`.
 - Returns: `<Porro>`
 
 ### Porro::request()
