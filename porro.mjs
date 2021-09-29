@@ -9,27 +9,27 @@ export class Porro {
    */
   constructor (options) {
     if (typeof options !== 'object' || options === null) {
-      throw new Error('Bucket options are mandatory')
+      options = {}
     }
 
     const bucketSize = options.bucketSize || 0
     if (!Number.isInteger(bucketSize) || bucketSize <= 0) {
-      throw new Error('Bucket size must be a positive integer')
+      throw new TypeError('Option bucketSize must be a positive integer')
     }
 
     const interval = options.interval || 0
     if (!Number.isInteger(interval) || interval <= 0) {
-      throw new Error('Interval must be a positive integer')
+      throw new TypeError('Option interval must be a positive integer')
     }
 
     const tokensPerInterval = options.tokensPerInterval || 0
     if (!Number.isInteger(tokensPerInterval) || tokensPerInterval <= 0) {
-      throw new Error('Tokens per interval must be a positive integer')
+      throw new TypeError('Option tokensPerInterval must be a positive integer')
     }
 
     const queueSize = options.queueSize === undefined ? 50 : options.queueSize
     if (!Number.isInteger(queueSize) || queueSize < 0) {
-      throw new Error('Queue size must be a positive integer or zero')
+      throw new TypeError('Option queueSize must be a positive integer or zero')
     }
 
     this.bucketSize = bucketSize
@@ -61,7 +61,7 @@ export class Porro {
 
     // Reserve current request (one token)
     if (this.bucket < 0 && Math.abs(this.bucket) >= this.queueSize) {
-      throw new Error('Bucket overflow')
+      throw new Error('Queue size limit reached')
     }
     this.bucket--
 

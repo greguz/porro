@@ -48,7 +48,7 @@ test('porro', async t => {
 })
 
 test('options', t => {
-  const otherOptions = {
+  const options = {
     bucketSize: 2,
     interval: 1000,
     queueSize: 1,
@@ -58,14 +58,14 @@ test('options', t => {
   t.throws(() => new Porro())
   t.throws(() => new Porro(null))
   t.throws(() => new Porro({}))
-  t.throws(() => new Porro({ ...otherOptions, bucketSize: '1' }))
-  t.throws(() => new Porro({ ...otherOptions, interval: '1' }))
-  t.throws(() => new Porro({ ...otherOptions, tokensPerInterval: '1' }))
-  t.throws(() => new Porro({ ...otherOptions, queueSize: '1' }))
-  t.throws(() => new Porro({ ...otherOptions, bucketSize: 0 }))
-  t.throws(() => new Porro({ ...otherOptions, interval: 0 }))
-  t.throws(() => new Porro({ ...otherOptions, tokensPerInterval: 0 }))
-  t.throws(() => new Porro({ ...otherOptions, queueSize: -1 }))
+  t.throws(() => new Porro({ ...options, bucketSize: '1' }))
+  t.throws(() => new Porro({ ...options, interval: '1' }))
+  t.throws(() => new Porro({ ...options, tokensPerInterval: '1' }))
+  t.throws(() => new Porro({ ...options, queueSize: '1' }))
+  t.throws(() => new Porro({ ...options, bucketSize: 0 }))
+  t.throws(() => new Porro({ ...options, interval: 0 }))
+  t.throws(() => new Porro({ ...options, tokensPerInterval: 0 }))
+  t.throws(() => new Porro({ ...options, queueSize: -1 }))
 })
 
 test('throttle', async t => {
