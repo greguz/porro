@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "lint": "standard **/*.mjs",
-    "test": "cross-env 'NODE_OPTIONS=--experimental-loader=@istanbuljs/esm-loader-hook' nyc ava",
+    "lint": "standard --fix **/*.mjs",
+    "test": "c8 ava",
     "prepublishOnly": "npm run lint && npm run build && npm run test"
   },
   "keywords": [
@@ -30,12 +30,10 @@
   "author": "Giacomo Gregoletto",
   "license": "MIT",
   "devDependencies": {
-    "@istanbuljs/esm-loader-hook": "0.1.2",
     "ava": "4.0.0-alpha.2",
-    "cross-env": "^7.0.3",
-    "nyc": "^15.1.0",
-    "rollup": "^2.56.3",
-    "standard": "^16.0.3"
+    "c8": "^7.10.0",
+    "rollup": "^2.58.0",
+    "standard": "^16.0.4"
   },
   "repository": {
     "type": "git",
