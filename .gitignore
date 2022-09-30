@@ -1,5 +1,10 @@
-/.nyc_output
-/coverage
-/node_modules
-/package-lock.json
-/porro.cjs
+.*
+!.editorconfig
+!.github
+!.gitignore
+!.nycrc
+coverage
+node_modules
+package-lock.json
+porro.cjs
+yarn.lock
