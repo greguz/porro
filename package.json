@@ -4,11 +4,12 @@
   "description": "Fast leaky bucket algorithm implementation without timers",
   "type": "module",
   "main": "./porro.cjs",
+  "types": "./porro.d.ts",
   "exports": {
     "import": "./porro.mjs",
-    "require": "./porro.cjs"
+    "require": "./porro.cjs",
+    "types": "./porro.d.ts"
   },
-  "types": "./porro.d.ts",
   "files": [
     "porro.d.ts",
     "porro.cjs",
@@ -16,9 +17,9 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "lint": "standard --fix **/*.mjs",
-    "test": "c8 ava",
-    "prepublishOnly": "npm run lint && npm run build && npm run test"
+    "lint": "standard",
+    "prepare": "npm run lint && npm run build && npm run test",
+    "test": "c8 ava"
   },
   "keywords": [
     "leaky",
@@ -30,10 +31,10 @@
   "author": "Giacomo Gregoletto",
   "license": "MIT",
   "devDependencies": {
-    "ava": "4.0.0-alpha.2",
-    "c8": "^7.10.0",
-    "rollup": "^2.58.0",
-    "standard": "^16.0.4"
+    "ava": "^5.0.1",
+    "c8": "^7.12.0",
+    "rollup": "^2.79.1",
+    "standard": "^17.0.0"
   },
   "repository": {
     "type": "git",
