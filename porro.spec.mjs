@@ -82,7 +82,7 @@ test('throttle', async t => {
   const end = Date.now()
 
   const time = end - start
-  t.true(time >= 3000 && time < 3100)
+  t.true(time >= 3000)
 })
 
 test('reset', async t => {
