@@ -34,7 +34,7 @@ export declare class Porro {
   /**
    * Requests a token and returns a `Promise` that will resolve when the request can execute.
    * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
-   * @returns {Promise}
+   * @returns {Promise} Resolves with the waited milliseconds.
    */
   throttle(quantity?: number): Promise<number>;
 }

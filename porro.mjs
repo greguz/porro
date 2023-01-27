@@ -95,12 +95,17 @@ export class Porro {
    * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
    * @returns {Promise}
    */
-  throttle (quantity) {
+  throttle (quantity = 1) {
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      return Promise.reject(
+        new TypeError('Tokens quantity must be a positive integer')
+      )
+    }
     const ms = this.request(quantity)
     if (ms > 0) {
       return new Promise(resolve => setTimeout(resolve, ms, ms))
     } else {
-      return Promise.resolve()
+      return Promise.resolve(ms)
     }
   }
 }

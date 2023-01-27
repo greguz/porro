@@ -146,3 +146,15 @@ test('quantity', async t => {
   bucket.refill()
   t.is(bucket.bucket, 1)
 })
+
+test('promise', async t => {
+  t.plan(1)
+
+  const bucket = new Porro({
+    bucketSize: 10,
+    interval: 100,
+    tokensPerInterval: 2
+  })
+
+  await t.throwsAsync(bucket.throttle(-1))
+})
