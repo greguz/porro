@@ -41,9 +41,9 @@ export class Porro {
   }
 
   /**
-   * Returns the delay that the request will wait before the execution.
+   * Refill the bucket from the previous iteration.
    */
-  request () {
+  refill () {
     // Number of tokens refilled from the last call
     const now = Date.now()
     const tokens = Math.floor(
@@ -58,20 +58,37 @@ export class Porro {
     if (this.bucket > this.bucketSize) {
       this.reset()
     }
+  }
 
-    // Reserve current request (one token)
-    if (this.bucket < 0 && Math.abs(this.bucket) >= this.queueSize) {
+  /**
+   * Returns the delay that the request will wait before the execution.
+   * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
+   * @returns {number}
+   */
+  request (quantity = 1) {
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      throw new TypeError('Tokens quantity must be a positive integer')
+    }
+
+    // Sync bucket status
+    this.refill()
+
+    // Apply "overflow" protection
+    const bucket = this.bucket - quantity
+    if (bucket < 0 && Math.abs(bucket) > this.queueSize) {
       throw new Error('Queue size limit reached')
     }
-    this.bucket--
 
-    if (this.bucket >= 0) {
+    // Reserve current request
+    this.bucket = bucket
+
+    if (bucket >= 0) {
       // Bucket has room for this request, no delay
       return 0
     } else {
       // This request needs to wait
       const queuedTokens =
-        Math.ceil(Math.abs(this.bucket) / this.tokensPerInterval) *
+        Math.ceil(Math.abs(bucket) / this.tokensPerInterval) *
         this.tokensPerInterval
       const tokenInterval = this.interval / this.tokensPerInterval
       return Math.round(queuedTokens * tokenInterval)
@@ -88,11 +105,12 @@ export class Porro {
 
   /**
    * Requests a token and returns a Promise that will resolve when the request can execute.
+   * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
    * @returns {Promise}
    */
-  throttle () {
+  throttle (quantity) {
     return new Promise(resolve => {
-      const ms = this.request()
+      const ms = this.request(quantity)
       if (ms > 0) {
         setTimeout(resolve, ms)
       } else {

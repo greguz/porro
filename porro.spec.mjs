@@ -2,6 +2,10 @@ import test from 'ava'
 
 import { Porro } from './porro.mjs'
 
+function sleep (ms, result = true) {
+  return new Promise(resolve => setTimeout(resolve, ms, result))
+}
+
 test('default', async t => {
   t.plan(6)
 
@@ -20,7 +24,7 @@ test('default', async t => {
 
   t.throws(() => bucket.request())
 
-  await new Promise(resolve => setTimeout(resolve, ms))
+  await sleep(ms)
 
   t.is(bucket.request(), 0)
   t.true(bucket.request() > 0)
@@ -54,6 +58,7 @@ test('options', t => {
     queueSize: 1,
     tokensPerInterval: 2
   }
+  t.truthy(options)
   t.throws(() => Porro())
   t.throws(() => new Porro())
   t.throws(() => new Porro(null))
@@ -114,7 +119,25 @@ test('refill', async t => {
   await bucket.throttle()
   await bucket.throttle()
 
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  await sleep(2000)
 
   t.is(bucket.request(), 0)
+})
+
+test('quantity', async t => {
+  const bucket = new Porro({
+    bucketSize: 10,
+    interval: 100,
+    tokensPerInterval: 2,
+  })
+
+  t.is(bucket.request(), 0)
+  t.is(bucket.request(), 0)
+  t.is(bucket.request(), 0)
+  t.is(bucket.request(7), 0)
+  t.true(bucket.request(1) > 0)
+  t.is(bucket.bucket, -1)
+  await sleep(bucket.interval)
+  bucket.refill()
+  t.is(bucket.bucket, 1)
 })

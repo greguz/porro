@@ -28,7 +28,7 @@ npm install porro
 
 ## API
 
-### new Porro(options)
+### `new Porro(options)`
 
 Porro's `constructor`.
 
@@ -39,19 +39,21 @@ Porro's `constructor`.
   - [queueSize] `<Number>` Number of overflowing tokens allowed. Defaults to `50`.
 - Returns: `<Porro>`
 
-### Porro::request()
+### `Porro::request([quantity])`
 
 Returns the amount of time that the pending request needs to wait before executing.
 
+- `[quantity]` `<Number>` Number (positive integer) of tokens to burn for the current request. Defaults to `1`.
 - Returns: `<Number>`
 
-### Porro::throttle()
+### `Porro::throttle([quantity])`
 
 Returns a `Promise` that will resolve when It's appropriate to execute the pending request.
 
+- `[quantity]` `<Number>` Number (positive integer) of tokens to burn for the current request. Defaults to `1`.
 - Returns: `<Promise>`
 
-### Porro::reset()
+### `Porro::reset()`
 
 Resets the bucket to its original status.
 
@@ -60,6 +62,7 @@ Resets the bucket to its original status.
 ```javascript
 import { Porro } from 'porro'
 
+// 2 requests per second with a "buffer" of 5 requests
 const bucket = new Porro({
   bucketSize: 5,
   interval: 1000,
@@ -67,31 +70,51 @@ const bucket = new Porro({
 })
 
 async function run () {
+  // Create 10 "requests"
   const items = new Array(10).fill(null)
-  const label = 'porro'
 
-  console.time(label)
-  await Promise.all(
-    items.map(async (item, index) => {
-      await bucket.throttle()
-      console.timeLog(label)
-      // do something useful
-    })
-  )
-  console.timeEnd(label)
+  // Execute all requests at the same time
+  await Promise.all(items.map(doSomething))
+}
+
+async function doSomething (value, index) {
+  // Get the correct waiting time
+  const ms = bucket.request()
+
+  console.log(`Request #${index} will wait ${ms}ms`)
+
+  // Wait for your turn
+  // You can also use `await bucket.throttle()` for simplicity
+  if (ms > 0) {
+    await sleep(ms)
+  }
+
+  console.log(`Run request #${index} at ${new Date().toISOString()}`)
+}
+
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 run()
-
-// porro: 0.598ms
-// porro: 3.749ms
-// porro: 3.824ms
-// porro: 3.894ms
-// porro: 3.945ms
-// porro: 1.001s
-// porro: 1.002s
-// porro: 2.001s
-// porro: 2.001s
-// porro: 3.001s
-// porro: 3.002s
+// Request #0 will wait 0ms
+// Run request #0 at 2023-01-27T13:29:29.246Z
+// Request #1 will wait 0ms
+// Run request #1 at 2023-01-27T13:29:29.246Z
+// Request #2 will wait 0ms
+// Run request #2 at 2023-01-27T13:29:29.246Z
+// Request #3 will wait 0ms
+// Run request #3 at 2023-01-27T13:29:29.246Z
+// Request #4 will wait 0ms
+// Run request #4 at 2023-01-27T13:29:29.246Z
+// Request #5 will wait 1000ms
+// Request #6 will wait 1000ms
+// Request #7 will wait 2000ms
+// Request #8 will wait 2000ms
+// Request #9 will wait 3000ms
+// Run request #5 at 2023-01-27T13:29:30.249Z
+// Run request #6 at 2023-01-27T13:29:30.250Z
+// Run request #7 at 2023-01-27T13:29:31.248Z
+// Run request #8 at 2023-01-27T13:29:31.249Z
+// Run request #9 at 2023-01-27T13:29:32.249Z
 ```

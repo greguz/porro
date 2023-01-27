@@ -29,14 +29,18 @@ export declare class Porro {
   constructor(options: PorroOptions);
   /**
    * Returns the delay that the request will wait before the execution.
+   * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
+   * @returns {number}
    */
-  request(): number;
+  request(quantity?: number): number;
   /**
    * Reset bucket to its initial status.
    */
   reset(): void;
   /**
-   * Requests a token and returns a Promise that will resolve when the request can execute.
+   * Requests a token and returns a `Promise` that will resolve when the request can execute.
+   * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
+   * @returns {Promise}
    */
-  throttle(): Promise<void>;
+  throttle(quantity?: number): Promise<void>;
 }
