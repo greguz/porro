@@ -11,17 +11,11 @@ export interface PorroOptions {
    * Number of refilled tokens per interval.
    */
   tokensPerInterval: number;
-  /**
-   * Number of allowed overflowing requests.
-   * @default 50
-   */
-  queueSize?: number;
 }
 
 export declare class Porro {
   public readonly bucketSize: number;
   public readonly interval: number;
-  public readonly queueSize: number;
   public readonly tokensPerInterval: number;
   /**
    * @constructor
@@ -42,5 +36,5 @@ export declare class Porro {
    * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
    * @returns {Promise}
    */
-  throttle(quantity?: number): Promise<void>;
+  throttle(quantity?: number): Promise<number>;
 }

@@ -5,7 +5,6 @@ export class Porro {
    * @param {number} options.bucketSize - Number of tokens available inside the bucket.
    * @param {number} options.interval - Time interval in ms when tokens are refilled.
    * @param {number} options.tokensPerInterval - Number of refilled tokens per interval.
-   * @param {number} [options.queueSize=50] - Number of allowed overflowing requests.
    */
   constructor (options) {
     if (typeof options !== 'object' || options === null) {
@@ -27,14 +26,8 @@ export class Porro {
       throw new TypeError('Option tokensPerInterval must be a positive integer')
     }
 
-    const queueSize = options.queueSize === undefined ? 50 : options.queueSize
-    if (!Number.isInteger(queueSize) || queueSize < 0) {
-      throw new TypeError('Option queueSize must be a positive integer or zero')
-    }
-
     this.bucketSize = bucketSize
     this.interval = interval
-    this.queueSize = queueSize
     this.tokensPerInterval = tokensPerInterval
 
     this.reset()
@@ -73,22 +66,16 @@ export class Porro {
     // Sync bucket status
     this.refill()
 
-    // Apply "overflow" protection
-    const bucket = this.bucket - quantity
-    if (bucket < 0 && Math.abs(bucket) > this.queueSize) {
-      throw new Error('Queue size limit reached')
-    }
-
     // Reserve current request
-    this.bucket = bucket
+    this.bucket -= quantity
 
-    if (bucket >= 0) {
+    if (this.bucket >= 0) {
       // Bucket has room for this request, no delay
       return 0
     } else {
       // This request needs to wait
       const queuedTokens =
-        Math.ceil(Math.abs(bucket) / this.tokensPerInterval) *
+        Math.ceil(Math.abs(this.bucket) / this.tokensPerInterval) *
         this.tokensPerInterval
       const tokenInterval = this.interval / this.tokensPerInterval
       return Math.round(queuedTokens * tokenInterval)
@@ -109,13 +96,11 @@ export class Porro {
    * @returns {Promise}
    */
   throttle (quantity) {
-    return new Promise(resolve => {
-      const ms = this.request(quantity)
-      if (ms > 0) {
-        setTimeout(resolve, ms)
-      } else {
-        resolve()
-      }
-    })
+    const ms = this.request(quantity)
+    if (ms > 0) {
+      return new Promise(resolve => setTimeout(resolve, ms, ms))
+    } else {
+      return Promise.resolve()
+    }
   }
 }

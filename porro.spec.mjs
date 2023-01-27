@@ -7,12 +7,11 @@ function sleep (ms, result = true) {
 }
 
 test('default', async t => {
-  t.plan(6)
+  t.plan(5)
 
   const bucket = new Porro({
     bucketSize: 2,
     interval: 1000,
-    queueSize: 1,
     tokensPerInterval: 2
   })
 
@@ -21,8 +20,6 @@ test('default', async t => {
 
   const ms = bucket.request()
   t.true(ms > 900 && ms < 1100)
-
-  t.throws(() => bucket.request())
 
   await sleep(ms)
 
@@ -52,13 +49,15 @@ test('porro', async t => {
 })
 
 test('options', t => {
+  t.plan(11)
+
   const options = {
     bucketSize: 2,
     interval: 1000,
-    queueSize: 1,
     tokensPerInterval: 2
   }
-  t.truthy(options)
+  t.truthy(new Porro(options))
+
   t.throws(() => Porro())
   t.throws(() => new Porro())
   t.throws(() => new Porro(null))
@@ -66,14 +65,14 @@ test('options', t => {
   t.throws(() => new Porro({ ...options, bucketSize: '1' }))
   t.throws(() => new Porro({ ...options, interval: '1' }))
   t.throws(() => new Porro({ ...options, tokensPerInterval: '1' }))
-  t.throws(() => new Porro({ ...options, queueSize: '1' }))
   t.throws(() => new Porro({ ...options, bucketSize: 0 }))
   t.throws(() => new Porro({ ...options, interval: 0 }))
   t.throws(() => new Porro({ ...options, tokensPerInterval: 0 }))
-  t.throws(() => new Porro({ ...options, queueSize: -1 }))
 })
 
 test('throttle', async t => {
+  t.plan(1)
+
   const bucket = new Porro({
     bucketSize: 5,
     interval: 1000,
@@ -91,6 +90,8 @@ test('throttle', async t => {
 })
 
 test('reset', async t => {
+  t.plan(1)
+
   const bucket = new Porro({
     bucketSize: 5,
     interval: 1000,
@@ -109,6 +110,8 @@ test('reset', async t => {
 })
 
 test('refill', async t => {
+  t.plan(1)
+
   const bucket = new Porro({
     bucketSize: 3,
     interval: 1000,
@@ -125,10 +128,12 @@ test('refill', async t => {
 })
 
 test('quantity', async t => {
+  t.plan(7)
+
   const bucket = new Porro({
     bucketSize: 10,
     interval: 100,
-    tokensPerInterval: 2,
+    tokensPerInterval: 2
   })
 
   t.is(bucket.request(), 0)
