@@ -1,5 +1,13 @@
 export class Porro {
   /**
+   * Returns the current number of tokens inside the bucket.
+   */
+  get bucket () {
+    this.refill()
+    return this._bucket
+  }
+
+  /**
    * @constructor
    * @param {Object} options
    * @param {number} options.bucketSize - Number of tokens available inside the bucket.
@@ -40,15 +48,15 @@ export class Porro {
     // Number of tokens refilled from the last call
     const now = Date.now()
     const tokens = Math.floor(
-      ((now - this.lastRequest) * this.tokensPerInterval) / this.interval
+      ((now - this._lastRequest) * this.tokensPerInterval) / this.interval
     )
 
     // Update bucket status
-    this.bucket += tokens
-    this.lastRequest += Math.ceil(
+    this._bucket += tokens
+    this._lastRequest += Math.ceil(
       (tokens * this.interval) / this.tokensPerInterval
     )
-    if (this.bucket > this.bucketSize) {
+    if (this._bucket > this.bucketSize) {
       this.reset()
     }
   }
@@ -67,15 +75,15 @@ export class Porro {
     this.refill()
 
     // Reserve current request
-    this.bucket -= quantity
+    this._bucket -= quantity
 
-    if (this.bucket >= 0) {
+    if (this._bucket >= 0) {
       // Bucket has room for this request, no delay
       return 0
     } else {
       // This request needs to wait
       const queuedTokens =
-        Math.ceil(Math.abs(this.bucket) / this.tokensPerInterval) *
+        Math.ceil(Math.abs(this._bucket) / this.tokensPerInterval) *
         this.tokensPerInterval
       const tokenInterval = this.interval / this.tokensPerInterval
       return Math.round(queuedTokens * tokenInterval)
@@ -86,14 +94,14 @@ export class Porro {
    * Reset bucket to its initial status.
    */
   reset () {
-    this.bucket = this.bucketSize
-    this.lastRequest = Date.now()
+    this._bucket = this.bucketSize
+    this._lastRequest = Date.now()
   }
 
   /**
    * Requests a token and returns a Promise that will resolve when the request can execute.
    * @param {number} [quantity] Number (positive integer) of "tokens" to burn for the current request. Defaults to `1`.
-   * @returns {Promise}
+   * @returns {Promise} Resolves with the waited milliseconds.
    */
   throttle (quantity = 1) {
     if (!Number.isInteger(quantity) || quantity < 1) {

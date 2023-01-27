@@ -7,13 +7,15 @@ function sleep (ms, result = true) {
 }
 
 test('default', async t => {
-  t.plan(5)
+  t.plan(6)
 
   const bucket = new Porro({
     bucketSize: 2,
     interval: 1000,
     tokensPerInterval: 2
   })
+
+  t.throws(() => bucket.request(-1))
 
   t.is(bucket.request(), 0)
   t.is(bucket.request(), 0)
@@ -143,7 +145,6 @@ test('quantity', async t => {
   t.true(bucket.request(1) > 0)
   t.is(bucket.bucket, -1)
   await sleep(bucket.interval)
-  bucket.refill()
   t.is(bucket.bucket, 1)
 })
 

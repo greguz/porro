@@ -14,9 +14,22 @@ export interface PorroOptions {
 }
 
 export declare class Porro {
-  public readonly bucketSize: number;
-  public readonly interval: number;
-  public readonly tokensPerInterval: number;
+  /**
+   * Configured bucket size (max number of tokens inside the buffer).
+   */
+  readonly bucketSize: number;
+  /**
+   * Configured time interval in milliseconds.
+   */
+  readonly interval: number;
+  /**
+   * Configured number of restored tokens after one time interval.
+   */
+  readonly tokensPerInterval: number;
+  /**
+   * Returns the current number of tokens inside the bucket.
+   */
+  get bucket(): number
   /**
    * @constructor
    */
