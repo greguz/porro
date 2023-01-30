@@ -38,7 +38,7 @@ Porro's `constructor`.
   - tokensPerInterval `<Number>` Number of refilled tokens after the specified interval.
 - Returns: `<Porro>`
 
-### `Porro::bucket`
+### `Porro::tokens`
 
 Returns (getter) the current number of tokens inside the bucket.
 
@@ -68,7 +68,7 @@ Resets the bucket to its original status.
 import { Porro } from 'porro'
 
 // 2 requests per second with a "buffer" of 5 requests
-const porro = new Porro({
+const bucket = new Porro({
   bucketSize: 5,
   interval: 1000,
   tokensPerInterval: 2
@@ -85,7 +85,7 @@ async function run () {
 
 async function doSomething (value, index) {
   // Get the waiting time for the currenct request
-  const ms = porro.request()
+  const ms = bucket.request()
 
   // Sleep for the required time
   // You can also use `await bucket.throttle()` for simplicity
@@ -99,7 +99,7 @@ async function doSomething (value, index) {
 }
 
 function log (message) {
-  console.log(`[${new Date().toISOString()}]`, message, `(bucket has now ${porro.bucket} tokens)`)
+  console.log(`[${new Date().toISOString()}]`, message, `(bucket has now ${bucket.tokens} tokens)`)
 }
 
 function sleep (ms) {

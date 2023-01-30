@@ -1,10 +1,17 @@
 export class Porro {
   /**
-   * Returns the current number of tokens inside the bucket.
+   * @deprecated Use `.tokens` instead.
    */
   get bucket () {
+    return this.tokens
+  }
+
+  /**
+   * Returns the current number of tokens inside the bucket.
+   */
+  get tokens () {
     this.refill()
-    return this._bucket
+    return this._tokens
   }
 
   /**
@@ -52,11 +59,11 @@ export class Porro {
     )
 
     // Update bucket status
-    this._bucket += tokens
+    this._tokens += tokens
     this._lastRequest += Math.ceil(
       (tokens * this.interval) / this.tokensPerInterval
     )
-    if (this._bucket > this.bucketSize) {
+    if (this._tokens > this.bucketSize) {
       this.reset()
     }
   }
@@ -75,15 +82,15 @@ export class Porro {
     this.refill()
 
     // Reserve current request
-    this._bucket -= quantity
+    this._tokens -= quantity
 
-    if (this._bucket >= 0) {
+    if (this._tokens >= 0) {
       // Bucket has room for this request, no delay
       return 0
     } else {
       // This request needs to wait
       const queuedTokens =
-        Math.ceil(Math.abs(this._bucket) / this.tokensPerInterval) *
+        Math.ceil(Math.abs(this._tokens) / this.tokensPerInterval) *
         this.tokensPerInterval
       const tokenInterval = this.interval / this.tokensPerInterval
       return Math.round(queuedTokens * tokenInterval)
@@ -94,7 +101,7 @@ export class Porro {
    * Reset bucket to its initial status.
    */
   reset () {
-    this._bucket = this.bucketSize
+    this._tokens = this.bucketSize
     this._lastRequest = Date.now()
   }
 

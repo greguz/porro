@@ -27,9 +27,13 @@ export declare class Porro {
    */
   readonly tokensPerInterval: number;
   /**
+   * @deprecated Use `.tokens` instead.
+   */
+  get bucket(): number;
+  /**
    * Returns the current number of tokens inside the bucket.
    */
-  get bucket(): number
+  get tokens(): number;
   /**
    * @constructor
    */
