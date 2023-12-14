@@ -124,3 +124,9 @@ run()
 // [2023-01-27T14:21:15.780Z] run request #8 (bucket has now -1 tokens)
 // [2023-01-27T14:21:16.782Z] run request #9 (bucket has now 1 tokens)
 ```
+
+## Donate
+
+Thank you!
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/greguz)
