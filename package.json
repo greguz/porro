@@ -31,10 +31,10 @@
   "author": "Giacomo Gregoletto",
   "license": "MIT",
   "devDependencies": {
-    "ava": "^5.1.1",
-    "c8": "^7.12.0",
-    "rollup": "^3.11.0",
-    "standard": "^17.0.0"
+    "ava": "^6.0.1",
+    "c8": "^8.0.1",
+    "rollup": "^4.9.0",
+    "standard": "^17.1.0"
   },
   "repository": {
     "type": "git",
