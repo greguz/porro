@@ -11,6 +11,10 @@ export interface PorroOptions {
    * Number of refilled tokens per interval.
    */
   tokensPerInterval: number;
+  /**
+   * Initial number of tokens. Defaults to `bucketSize`.
+   */
+  tokens?: number;
 }
 
 export declare class Porro {
@@ -34,6 +38,10 @@ export declare class Porro {
    * Returns the current number of tokens inside the bucket.
    */
   get tokens(): number;
+  /**
+   * Set the current amount of available tokens.
+   */
+  set tokens(value: number);
   /**
    * @constructor
    */

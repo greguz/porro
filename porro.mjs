@@ -15,11 +15,23 @@ export class Porro {
   }
 
   /**
+   * Set the current amount of available tokens.
+   */
+  set tokens (value) {
+    if (!Number.isInteger(value)) {
+      throw new TypeError('Number of tokens must be an integer')
+    }
+    this._lastRequest = Date.now()
+    this._tokens = value
+  }
+
+  /**
    * @constructor
    * @param {Object} options
    * @param {number} options.bucketSize - Number of tokens available inside the bucket.
    * @param {number} options.interval - Time interval in ms when tokens are refilled.
    * @param {number} options.tokensPerInterval - Number of refilled tokens per interval.
+   * @param {number} [options.tokens] - Initial number of tokens. Defaults to `bucketSize`.
    */
   constructor (options) {
     if (typeof options !== 'object' || options === null) {
@@ -45,7 +57,11 @@ export class Porro {
     this.interval = interval
     this.tokensPerInterval = tokensPerInterval
 
-    this.reset()
+    if (options.tokens === undefined) {
+      this.tokens = bucketSize
+    } else {
+      this.tokens = options.tokens
+    }
   }
 
   /**
@@ -101,8 +117,7 @@ export class Porro {
    * Reset bucket to its initial status.
    */
   reset () {
-    this._tokens = this.bucketSize
-    this._lastRequest = Date.now()
+    this.tokens = this.bucketSize
   }
 
   /**

@@ -33,16 +33,15 @@ npm install porro
 Porro's `constructor`.
 
 - `options` `<Object>`
-  - bucketSize `<Number>` The size (number of tokens) of the bucket.
-  - interval `<Number>` Time interval in milliseconds to refill the bucket.
-  - tokensPerInterval `<Number>` Number of refilled tokens after the specified interval.
+  - `bucketSize` `<Number>` The size (number of tokens) of the bucket.
+  - `interval` `<Number>` Time interval in milliseconds to refill the bucket.
+  - `tokensPerInterval` `<Number>` Number of refilled tokens after the specified interval.
+  - `[tokens]` `<Number>` Initial number of tokens. Defaults to `bucketSize`.
 - Returns: `<Porro>`
 
 ### `Porro::tokens`
 
-Returns (getter) the current number of tokens inside the bucket.
-
-- Returns: `<Number>`
+Getter and setter property. Gets or sets the current number of available tokens.
 
 ### `Porro::request([quantity])`
 

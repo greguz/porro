@@ -161,3 +161,21 @@ test('promise', async t => {
 
   await t.throwsAsync(bucket.throttle(-1))
 })
+
+test('set tokens', t => {
+  t.plan(4)
+
+  const bucket = new Porro({
+    bucketSize: 10,
+    interval: 100,
+    tokensPerInterval: 2,
+    tokens: 5
+  })
+
+  t.is(bucket.tokens, 5)
+  t.throws(() => { bucket.tokens = 1.1 }, { instanceOf: TypeError })
+
+  bucket.tokens = 1
+  t.is(bucket.request(), 0)
+  t.is(bucket.request(), 100)
+})

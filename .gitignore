@@ -1,4 +1,5 @@
 .*
+!.c8rc
 !.editorconfig
 !.github
 !.gitignore
