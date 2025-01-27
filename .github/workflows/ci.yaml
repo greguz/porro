@@ -2,16 +2,13 @@ name: ci
 
 on: [push, pull_request]
 
-env:
-  CI: true
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18, 20, 22]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
@@ -35,18 +32,16 @@ jobs:
         run: npm test
 
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
-          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ join(matrix.*, '-') }}
           parallel: true
-          flag-name: run-${{ matrix.test_number }}
 
   finish:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
-          github-token: ${{ secrets.github_token }}
           parallel-finished: true
