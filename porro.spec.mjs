@@ -179,3 +179,17 @@ test('set tokens', t => {
   t.is(bucket.request(), 0)
   t.is(bucket.request(), 100)
 })
+
+test('no overflow', t => {
+  t.plan(2)
+
+  const bucket = new Porro({
+    bucketSize: 20,
+    interval: 1000,
+    tokensPerInterval: 2
+  })
+
+  t.is(bucket.tokens, 20)
+  bucket.tokens = 200
+  t.is(bucket.tokens, 20)
+})

@@ -17,7 +17,7 @@ export interface PorroOptions {
   tokens?: number;
 }
 
-export declare class Porro {
+export declare class Porro implements PorroOptions {
   /**
    * Configured bucket size (max number of tokens inside the buffer).
    */

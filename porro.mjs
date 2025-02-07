@@ -3,6 +3,7 @@ export class Porro {
    * @deprecated Use `.tokens` instead.
    */
   get bucket () {
+    // TODO: remove this getter
     return this.tokens
   }
 
@@ -21,6 +22,8 @@ export class Porro {
     if (!Number.isInteger(value)) {
       throw new TypeError('Number of tokens must be an integer')
     }
+
+    // TODO: use private properties
     this._lastRequest = Date.now()
     this._tokens = value
   }
@@ -135,7 +138,7 @@ export class Porro {
     if (ms > 0) {
       return new Promise(resolve => setTimeout(resolve, ms, ms))
     } else {
-      return Promise.resolve(ms)
+      return Promise.resolve(0)
     }
   }
 }
